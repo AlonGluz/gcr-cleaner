@@ -49,6 +49,7 @@ var (
 	recursivePtr   = flag.Bool("recursive", false, "Clean all sub-repositories under the -repo root")
 	gracePtr       = flag.Duration("grace", 0, "Grace period")
 	tagFilterAny   = flag.String("tag-filter-any", "", "Delete images where any tag matches this regular expression")
+	tagFilterOut   = flag.Bool("tag-filter-out", false, "Delete images where any tag DOESN'T matches this regular expression")
 	tagFilterAll   = flag.String("tag-filter-all", "", "Delete images where all tags match this regular expression")
 	keepPtr        = flag.Int64("keep", 0, "Minimum to keep")
 	dryRunPtr      = flag.Bool("dry-run", false, "Do a noop on delete api call")
@@ -175,7 +176,7 @@ func realMain(ctx context.Context, logger *gcrcleaner.Logger) error {
 	var errs []error
 	for i, repo := range repos {
 		fmt.Fprintf(stdout, "%s\n", repo)
-		deleted, err := cleaner.Clean(ctx, repo, since, *keepPtr, tagFilter, *dryRunPtr)
+		deleted, err := cleaner.Clean(ctx, repo, since, *keepPtr, tagFilter, *tagFilterOut, *dryRunPtr)
 		if err != nil {
 			errs = append(errs, err)
 		}
