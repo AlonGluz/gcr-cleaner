@@ -29,9 +29,9 @@ type TagFilter interface {
 // BuildTagFilter builds and compiles a new tag filter for the given inputs. All
 // inputs are strings to be compiled to regular expressions and are mutually
 // exclusive.
-func BuildTagFilter(any, all, excludeAny string) (TagFilter, error) {
+func BuildTagFilter(any, all string) (TagFilter, error) {
 	// Ensure only one tag filter type is given.
-	if any != "" && all != "" && excludeAny != "" {
+	if any != "" && all != "" {
 		return nil, fmt.Errorf("only one tag filter type may be specified")
 	}
 
@@ -44,12 +44,6 @@ func BuildTagFilter(any, all, excludeAny string) (TagFilter, error) {
 		return &TagFilterAny{re}, nil
 	case all != "":
 		re, err := regexp.Compile(all)
-		if err != nil {
-			return nil, fmt.Errorf("failed to compile tag_filter_all regular expression %q: %w", all, err)
-		}
-		return &TagFilterAll{re}, nil
-	case excludeAny != "":
-		re, err := regexp.Compile(excludeAny)
 		if err != nil {
 			return nil, fmt.Errorf("failed to compile tag_filter_all regular expression %q: %w", all, err)
 		}

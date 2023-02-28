@@ -71,6 +71,9 @@ The payload is expected to be JSON with the following fields:
   This algorithm exists to preserve ordering for containers that are moved
   between registries.
 
+- `tag_filter_out` - If specified, will filter out the logic of the tag filter match
+  causing the image to be deleted if the tag filter does NOT match.
+
 - `tag_filter_any` - If specified, any image with at **least one tag** that
   matches this given regular expression will be deleted. The image will be
   deleted even if it has other tags that do not match the given regular
